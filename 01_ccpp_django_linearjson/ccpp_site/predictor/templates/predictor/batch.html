@@ -1,0 +1,14 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Batch Prediction (CSV)</h5>
+    <p>Upload a CSV with headers: <code>AT,V,AP,RH</code></p>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="file" accept=".csv" class="form-control" required>
+      <button class="btn btn-primary mt-3">Get Predictions</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

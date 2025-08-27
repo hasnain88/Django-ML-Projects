@@ -1,0 +1,122 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Insights</h5>
+        <p class="text-muted">Upload a CSV with columns <code>AT,V,AP,RH,PE</code> to see stats, correlations, and charts.</p>
+        <form method="post" enctype="multipart/form-data" class="mb-2">
+          {% csrf_token %}
+          <div class="mb-3">
+            {{ form.file.label_tag }} 
+            {{ form.file }}
+          </div>
+          <button class="btn btn-primary">Analyze</button>
+          <a class="btn btn-outline-secondary ms-2" href="/sample.csv">Sample CSV</a>
+        </form>
+        {% if msg %}
+          <div class="alert alert-warning mt-2">{{ msg }}</div>
+        {% endif %}
+        {% if meta.metrics %}
+          <hr>
+          <div class="small text-muted">
+            Current model — R²: <b>{{ meta.metrics.r2|floatformat:4 }}</b>, 
+            RMSE: <b>{{ meta.metrics.rmse|floatformat:3 }}</b> MW
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    {% if tables.summary_html %}
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h6 class="card-title">Summary Statistics</h6>
+          <div class="table-responsive">{{ tables.summary_html|safe }}</div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if tables.corr_html %}
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h6 class="card-title">Correlation Matrix</h6>
+          <div class="table-responsive">{{ tables.corr_html|safe }}</div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if charts.pe_hist or charts.heatmap or charts.pe_vs_at %}
+  <div class="row g-4 mt-1">
+    {% if charts.pe_hist %}
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">PE Distribution</h6>
+            <img class="img-fluid" src="data:image/png;base64,{{ charts.pe_hist }}" alt="PE Histogram"/>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if charts.heatmap %}
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">Correlation Heatmap</h6>
+            <img class="img-fluid" src="data:image/png;base64,{{ charts.heatmap }}" alt="Heatmap"/>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if charts.pe_vs_at %}
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">PE vs AT</h6>
+            <img class="img-fluid" src="data:image/png;base64,{{ charts.pe_vs_at }}" alt="PE vs AT"/>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="row g-4 mt-1">
+    {% if charts.pe_vs_v %}
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">PE vs V</h6>
+            <img class="img-fluid" src="data:image/png;base64,{{ charts.pe_vs_v }}" alt="PE vs V"/>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% if charts.pe_vs_ap %}
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">PE vs AP</h6>
+            <img class="img-fluid" src="data:image/png;base64,{{ charts.pe_vs_ap }}" alt="PE vs AP"/>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% if charts.pe_vs_rh %}
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">PE vs RH</h6>
+            <img class="img-fluid" src="data:image/png;base64,{{ charts.pe_vs_rh }}" alt="PE vs RH"/>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

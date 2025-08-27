@@ -1,0 +1,32 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Single Prediction (Linear Regression)</h5>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary">Predict</button>
+        </form>
+        {% if prediction is not None %}
+          <hr>
+          <h6>Predicted Power Output (PE): <span class="badge bg-success">{{ prediction }} MW</span></h6>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">API Usage</h5>
+<pre class="mb-0">POST /api/predict
+Content-Type: application/json
+
+{ "AT": 14.96, "V": 41.76, "AP": 1024.07, "RH": 73.17 }</pre>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

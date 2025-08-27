@@ -1,0 +1,35 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Batch Prediction (CSV)</h5>
+        <p class="text-muted mb-2">Upload a CSV with headers: <code>AT,V,AP,RH</code></p>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" name="file" accept=".csv" class="form-control" required>
+          <button class="btn btn-primary mt-3">Get Predictions</button>
+          <a class="btn btn-outline-secondary mt-3 ms-2" href="/sample.csv">Download sample CSV</a>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Notes</h6>
+        {% if meta.metrics %}
+          <div class="small mb-2">
+            Current model — R²: <b>{{ meta.metrics.r2|floatformat:4 }}</b>,
+            RMSE: <b>{{ meta.metrics.rmse|floatformat:3 }}</b> MW.
+          </div>
+        {% endif %}
+        <div class="small text-muted">
+          The output is a CSV with a new column <code>PE_pred</code> in megawatts.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

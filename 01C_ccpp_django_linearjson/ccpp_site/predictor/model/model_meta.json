@@ -1,0 +1,48 @@
+{
+  "trained_at": "2025-08-27 18:50:31",
+  "algorithm": "StandardScaler + LinearRegression",
+  "target": "PE (MW)",
+  "features": [
+    {
+      "name": "AT",
+      "label": "Ambient Temperature (\u00b0C)"
+    },
+    {
+      "name": "V",
+      "label": "Exhaust Vacuum (cm Hg)"
+    },
+    {
+      "name": "AP",
+      "label": "Ambient Pressure (mbar)"
+    },
+    {
+      "name": "RH",
+      "label": "Relative Humidity (%)"
+    }
+  ],
+  "ranges": {
+    "AT": {
+      "min": 1.81,
+      "max": 37.11
+    },
+    "V": {
+      "min": 25.36,
+      "max": 81.56
+    },
+    "AP": {
+      "min": 992.89,
+      "max": 1033.3
+    },
+    "RH": {
+      "min": 25.56,
+      "max": 100.16
+    }
+  },
+  "metrics": {
+    "r2": 0.9301046431962188,
+    "rmse": 4.5026332295321865,
+    "n_train": 7654,
+    "n_test": 1914,
+    "n_total": 9568
+  }
+}

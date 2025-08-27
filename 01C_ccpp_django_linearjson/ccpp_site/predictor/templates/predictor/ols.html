@@ -1,0 +1,61 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">OLS Coefficients & Inference</h5>
+
+        {% if ols.table and ols.table|length > 0 %}
+          <div class="table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Coef</th>
+                  <th>Std Err</th>
+                  <th>t</th>
+                  <th>p</th>
+                  <th>95% CI Low</th>
+                  <th>95% CI High</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in ols.table %}
+                <tr>
+                  <td>{{ row.term }}</td>
+                  <td>{{ row.coef|floatformat:6 }}</td>
+                  <td>{{ row.std_err|floatformat:6 }}</td>
+                  <td>{{ row.t|floatformat:3 }}</td>
+                  <td>{{ row.p|floatformat:4 }}</td>
+                  <td>{{ row.ci_low|floatformat:6 }}</td>
+                  <td>{{ row.ci_high|floatformat:6 }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="small text-muted mt-2">
+            n = {{ ols.meta.nobs }} • df_model = {{ ols.meta.df_model }} • df_resid = {{ ols.meta.df_resid }}<br>
+            R² = {{ ols.meta.r2|floatformat:4 }} • Adj R² = {{ ols.meta.r2_adj|floatformat:4 }}
+            {% if ols.meta.fvalue %} • F = {{ ols.meta.fvalue|floatformat:3 }} (p = {{ ols.meta.f_pvalue|floatformat:4 }}){% endif %}
+            • AIC = {{ ols.meta.aic|floatformat:2 }} • BIC = {{ ols.meta.bic|floatformat:2 }}
+          </div>
+        {% else %}
+          <div class="alert alert-warning">No OLS results found. Please retrain the model.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Full OLS Summary</h5>
+        <pre style="white-space: pre-wrap; font-size: .85rem;">{{ summary }}</pre>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

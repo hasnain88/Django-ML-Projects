@@ -1,0 +1,25 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">About this App</h5>
+    <p>
+      This tool predicts the net hourly electrical energy output (PE) of a Combined Cycle Power Plant from environmental
+      variables (AT, V, AP, RH). It uses a scikit-learn pipeline: <b>{{ meta.algorithm }}</b>.
+    </p>
+    {% if meta.metrics %}
+      <p class="mb-1"><b>Validation metrics:</b></p>
+      <ul class="mb-2">
+        <li>R²: {{ meta.metrics.r2|floatformat:4 }}</li>
+        <li>RMSE: {{ meta.metrics.rmse|floatformat:3 }} MW</li>
+        <li>Train: {{ meta.metrics.n_train }}, Test: {{ meta.metrics.n_test }}, Total: {{ meta.metrics.n_total }}</li>
+        <li>Trained at: {{ meta.trained_at }}</li>
+      </ul>
+    {% endif %}
+    <p class="text-muted small mb-0">
+      Linear explanations show how each standardized feature contributes to a prediction. For very non-linear effects,
+      consider upgraded models (e.g., Gradient Boosting, SVR, shallow NN) and compare with cross-validation.
+    </p>
+  </div>
+</div>
+{% endblock %}
